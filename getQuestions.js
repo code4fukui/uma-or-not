@@ -1,4 +1,4 @@
-  const questions = [
+const questions = [
   {
     full: "千軍万馬",
     missingIndex: 3, // 「馬」を隠す（0:千 1:軍 2:万 3:馬）
