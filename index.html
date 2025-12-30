@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>お正月・馬 四字熟語クイズ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-grad-top: #fff7e6;
+      --bg-grad-bottom: #ffd6d6;
+      --main-red: #d32f2f;
+      --accent-gold: #f9a825;
+      --accent-dark: #7b1fa2;
+      --paper: #fffdf7;
+      --text-main: #4a2c2a;
+      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --radius-xl: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        "Segoe UI", "YuGothic", "Yu Gothic", "Hiragino Kaku Gothic ProN",
+        "Meiryo", sans-serif;
+      background: linear-gradient(145deg, var(--bg-grad-top), var(--bg-grad-bottom));
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 16px;
+    }
+
+    .app {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(255, 253, 247, 0.96);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* しめ縄っぽい飾り */
+    .app::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        135deg,
+        #f9a825 0px,
+        #f9a825 8px,
+        #f57c00 8px,
+        #f57c00 16px
+      );
+      z-index: 1;
+    }
+
+    header {
+      text-align: center;
+      padding: 28px 16px 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    header .subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--accent-dark);
+      margin-bottom: 4px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.4;
+      color: var(--main-red);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header .emoji {
+      margin-top: 6px;
+      font-size: 1.4rem;
+    }
+
+    main {
+      padding: 10px 16px 18px;
+    }
+
+    .question-card {
+      background: var(--paper);
+      border-radius: var(--radius-xl);
+      padding: 18px 16px 14px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      /* 梅の花っぽい丸い模様 */
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe082, transparent 60%);
+      opacity: 0.45;
+      top: -24px;
+      right: -24px;
+      pointer-events: none;
+    }
+
+    .question-label {
+      font-size: 0.9rem;
+      color: #8d6e63;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(243, 229, 171, 0.8);
+      font-size: 0.78rem;
+    }
+
+    .yoji {
+      text-align: center;
+      font-size: 2.6rem;
+      letter-spacing: 0.35em;
+      padding: 8px 0 4px;
+      font-weight: 700;
+    }
+
+    .yoji span.missing {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      line-height: 1.2em;
+      text-align: center;
+      border-radius: 0.3em;
+      border: 2px dashed var(--accent-gold);
+      font-size: 0.9em;
+      vertical-align: middle;
+      background: rgba(255, 249, 219, 0.9);
+    }
+
+    .hint {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 4px;
+      color: #6d4c41;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.2s ease;
+    }
+
+    button:disabled {
+      cursor: default;
+      opacity: 0.6;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .btn-uma {
+      flex: 1;
+      background: linear-gradient(135deg, #e53935, #d32f2f);
+      color: #fffef9;
+      box-shadow: 0 3px 8px rgba(211, 47, 47, 0.4);
+    }
+
+    .btn-not-uma {
+      flex: 1;
+      background: linear-gradient(135deg, #fbc02d, #f9a825);
+      color: #3e2723;
+      box-shadow: 0 3px 8px rgba(249, 168, 37, 0.45);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(2px) scale(0.98);
+      box-shadow: none;
+    }
+
+    .result {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.9);
+      min-height: 40px;
+      font-size: 0.92rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-line {
+      font-weight: 600;
+    }
+
+    .result-line.correct {
+      color: #2e7d32;
+    }
+
+    .result-line.incorrect {
+      color: #c62828;
+    }
+
+    .result-yoji {
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.25em;
+    }
+
+    .result-reading {
+      font-size: 0.85rem;
+      color: #6d4c41;
+    }
+
+    .result-meaning {
+      font-size: 0.88rem;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .score-row span.value {
+      font-weight: 700;
+      min-width: 2em;
+      display: inline-block;
+      text-align: right;
+    }
+
+    .score-row .streak {
+      color: var(--main-red);
+    }
+
+    #next-btn {
+      margin-top: 12px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 999px;
+      border: 1px solid rgba(198, 40, 40, 0.35);
+      color: var(--main-red);
+      font-weight: 600;
+      padding: 9px 10px;
+      box-shadow: 0 2px 6px rgba(198, 40, 40, 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.95rem;
+    }
+
+    #next-btn::after {
+      content: "▶";
+      font-size: 0.7rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      padding-bottom: 14px;
+      color: #8d6e63;
+    }
+
+    /* 正解時ふわっとアニメ */
+    .pop {
+      animation: pop 0.35s ease-out;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.3;
+      }
+      60% {
+        transform: scale(1.04);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (min-width: 600px) {
+      body {
+        padding: 32px;
+      }
+      header h1 {
+        font-size: 1.6rem;
+      }
+      .yoji {
+        font-size: 2.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="subtitle">お正月スペシャルクイズ</div>
+      <h1>隠れた一字は「馬」？ 四字熟語</h1>
+      <div class="emoji">🎍🐴🎍</div>
+    </header>
+    <main>
+      <section class="question-card">
+        <div class="question-label">
+          <div>第 <span id="q-number">1</span> 問</div>
+          <div class="badge">□ の中身を当てよう</div>
+        </div>
+        <div class="yoji" id="yoji-display">□□□□</div>
+        <div class="hint">隠れた一字は「馬」かな？ それとも…？</div>
+        <div class="buttons">
+          <button class="btn-uma" id="btn-uma">「馬」だと思う</button>
+          <button class="btn-not-uma" id="btn-not-uma">「馬」じゃない</button>
+        </div>
+      </section>
+
+      <section class="result" id="result-area">
+        <div class="result-line">答えを選んでね。</div>
+      </section>
+
+      <div class="score-row">
+        <div>正解数: <span class="value" id="score">0</span></div>
+        <div>連続正解: <span class="value streak" id="streak">0</span></div>
+      </div>
+
+      <button id="next-btn" disabled>次の問題へ</button>
+    </main>
+    <footer>
+      おみくじ気分でポチポチ遊んでね 🐴
+    </footer>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        full: "千軍万馬",
+        missingIndex: 3, // 「馬」を隠す（0:千 1:軍 2:万 3:馬）
+        isUma: true,
+        reading: "せんぐんばんば",
+        meaning: "多くの実戦経験を積んだ、強くて頼もしい人や軍勢のこと。"
+      },
+      {
+        full: "意馬心猿",
+        missingIndex: 1, // 「馬」を隠す
+        isUma: true,
+        reading: "いばしんえん",
+        meaning: "心があちこちへ走り回って落ち着かないさま。欲望に振り回されること。"
+      },
+      {
+        full: "竹馬之友",
+        missingIndex: 1, // 「馬」を隠す
+        isUma: true,
+        reading: "ちくばのとも",
+        meaning: "子どものころからの親しい友達。幼なじみ。"
+      },
+      {
+        full: "電光石火",
+        missingIndex: 2, // 「石」を隠す
+        isUma: false,
+        reading: "でんこうせっか",
+        meaning: "とても素早いこと。あっという間の出来事。"
+      },
+      {
+        full: "一期一会",
+        missingIndex: 0, // 「一」を隠す
+        isUma: false,
+        reading: "いちごいちえ",
+        meaning: "一生に一度だけの出会いと思って、人とのご縁を大切にすること。"
+      },
+      {
+        full: "起死回生",
+        missingIndex: 3, // 「生」を隠す
+        isUma: false,
+        reading: "きしかいせい",
+        meaning: "絶望的な状況から一気に立ち直ること。"
+      },
+      {
+        full: "東奔西走",
+        missingIndex: 1, // 「奔」を隠す
+        isUma: false,
+        reading: "とうほんせいそう",
+        meaning: "あちらこちらと忙しく走り回ること。"
+      },
+      {
+        full: "和気藹々",
+        missingIndex: 2, // 「藹」を隠す
+        isUma: false,
+        reading: "わきあいあい",
+        meaning: "なごやかで楽しい雰囲気に満ちているさま。"
+      }
+    ];
+
+    let currentQuestion = null;
+    let hasAnswered = false;
+    let questionCount = 0;
+    let score = 0;
+    let streak = 0;
+    let lastIndex = -1;
+
+    const qNumberEl = document.getElementById("q-number");
+    const yojiDisplayEl = document.getElementById("yoji-display");
+    const resultAreaEl = document.getElementById("result-area");
+    const scoreEl = document.getElementById("score");
+    const streakEl = document.getElementById("streak");
+    const btnUma = document.getElementById("btn-uma");
+    const btnNotUma = document.getElementById("btn-not-uma");
+    const nextBtn = document.getElementById("next-btn");
+
+    function pickQuestion() {
+      if (questions.length === 0) return null;
+      let idx;
+      if (questions.length === 1) {
+        idx = 0;
+      } else {
+        do {
+          idx = Math.floor(Math.random() * questions.length);
+        } while (idx === lastIndex);
+      }
+      lastIndex = idx;
+      return questions[idx];
+    }
+
+    function renderQuestion(q) {
+      if (!q) return;
+      // 表示用に missingIndex の文字を □ に置き換える
+      const chars = q.full.split("");
+      const missingChar = chars[q.missingIndex];
+      chars[q.missingIndex] = `<span class="missing">□</span>`;
+      yojiDisplayEl.innerHTML = chars.join("");
+      yojiDisplayEl.classList.remove("pop");
+
+      qNumberEl.textContent = questionCount;
+      resultAreaEl.innerHTML = `<div class="result-line">隠れている一字が「馬」かどうか当ててね！</div>`;
+
+      hasAnswered = false;
+      btnUma.disabled = false;
+      btnNotUma.disabled = false;
+      nextBtn.disabled = true;
+
+      // 余計なデータとして、元の隠れ文字も保存しておく
+      currentQuestion.hiddenChar = missingChar;
+    }
+
+    function showResult(isCorrect, answeredUma) {
+      const q = currentQuestion;
+      const correctWord = q.full;
+      const correctHidden = q.isUma ? "馬" : q.hiddenChar;
+
+      const lineClass = isCorrect ? "correct" : "incorrect";
+      const lineText = isCorrect ? "🎉 正解！" : "💦 残念…";
+
+      const explained = q.isUma
+        ? `隠れた一字は「馬」でした。`
+        : `隠れた一字は「${correctHidden}」で、「馬」ではありません。`;
+
+      resultAreaEl.innerHTML = `
+        <div class="result-line ${lineClass}">${lineText}</div>
+        <div class="result-yoji pop">${correctWord}</div>
+        <div class="result-reading">［${q.reading}］</div>
+        <div class="result-meaning">${explained} ${q.meaning}</div>
+      `;
+
+      yojiDisplayEl.classList.add("pop");
+    }
+
+    function updateScore(isCorrect) {
+      if (isCorrect) {
+        score++;
+        streak++;
+      } else {
+        streak = 0;
+      }
+      scoreEl.textContent = String(score);
+      streakEl.textContent = String(streak);
+    }
+
+    function handleAnswer(answerIsUma) {
+      if (!currentQuestion || hasAnswered) return;
+      hasAnswered = true;
+
+      btnUma.disabled = true;
+      btnNotUma.disabled = true;
+      nextBtn.disabled = false;
+
+      const isCorrect = (answerIsUma === currentQuestion.isUma);
+      updateScore(isCorrect);
+      showResult(isCorrect, answerIsUma);
+    }
+
+    function nextQuestion() {
+      questionCount++;
+      currentQuestion = pickQuestion();
+      renderQuestion(currentQuestion);
+    }
+
+    btnUma.addEventListener("click", () => handleAnswer(true));
+    btnNotUma.addEventListener("click", () => handleAnswer(false));
+    nextBtn.addEventListener("click", () => nextQuestion());
+
+    // キーボード操作: 左/↑で「馬」、右/↓で「馬じゃない」
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!btnUma.disabled) handleAnswer(true);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        if (!btnNotUma.disabled) handleAnswer(false);
+      } else if (e.key === "Enter") {
+        // 回答後 Enter で次へ
+        if (!nextBtn.disabled && hasAnswered) {
+          e.preventDefault();
+          nextQuestion();
+        }
+      }
+    });
+
+    // 初期表示
+    nextQuestion();
+  </script>
+</body>
+</html>
