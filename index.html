@@ -370,6 +370,7 @@
 
   <script type="module">
     import { getQuestions } from "./getQuestions.js";
+    import { popCracker } from "./popCracker.js";
 
     const questions = getQuestions();
     let currentQuestion = null;
@@ -451,6 +452,7 @@
 
       if (isCorrect) {
         sound_ok.play();
+        popCracker();
       } else {
         sound_ng.play();
       }
