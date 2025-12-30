@@ -1,4 +1,5 @@
 import { CSV } from "https://js.sabae.cc/CSV.js";
+import { shuffle } from "https://js.sabae.cc/shuffle.js";
 
 const data = await CSV.fetchJSON("https://code4fukui.github.io/horse-opendata/idiom4.csv");
 
@@ -9,5 +10,7 @@ const questions = data.map(i => ({
   reading: i.読み,
   meaning: i.簡単な意味,
 }));
+
+shuffle(questions);
 
 export const getQuestions = () => questions;

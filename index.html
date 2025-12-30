@@ -394,17 +394,10 @@
     const sound_next = getAudio("sound-next.mp3");
 
     function pickQuestion() {
-      if (questions.length === 0) return null;
-      let idx;
-      if (questions.length === 1) {
-        idx = 0;
-      } else {
-        do {
-          idx = Math.floor(Math.random() * questions.length);
-        } while (idx === lastIndex);
+      if (lastIndex == questions.length - 1) {
+        lastIndex = -1;
       }
-      lastIndex = idx;
-      return questions[idx];
+      return questions[++lastIndex];
     }
 
     function renderQuestion(q) {
