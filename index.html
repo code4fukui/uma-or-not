@@ -280,7 +280,7 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      font-size: 0.95rem;
+      font-size: 150%;
     }
 
     #next-btn::after {
@@ -341,7 +341,7 @@
           <div class="badge">□ の中身を当てよう</div>
         </div>
         <div class="yoji" id="yoji-display">□□□□</div>
-        <div class="hint">隠れた一字は、馬?</div>
+        <div class="hint">隠れた一字は、馬？</div>
         <div class="buttons">
           <button class="btn-uma" id="btn-uma"><ruby>馬<rt>うま</rt></ruby></button>
           <button class="btn-not-uma" id="btn-not-uma"><ruby>否<rt>いな</rt></ruby></button>
@@ -383,6 +383,15 @@
     const btnUma = document.getElementById("btn-uma");
     const btnNotUma = document.getElementById("btn-not-uma");
     const nextBtn = document.getElementById("next-btn");
+
+    const getAudio = (fn) => {
+      const a = new Audio();
+      a.src = fn;
+      return a;
+    };
+    const sound_ok = getAudio("sound-ok.mp3");
+    const sound_ng = getAudio("sound-ng.mp3");
+    const sound_next = getAudio("sound-next.mp3");
 
     function pickQuestion() {
       if (questions.length === 0) return null;
@@ -439,6 +448,15 @@
       `;
 
       yojiDisplayEl.classList.add("pop");
+
+      const mis = yojiDisplayEl.querySelector("span");
+      mis.replaceWith(correctHidden);
+
+      if (isCorrect) {
+        sound_ok.play();
+      } else {
+        sound_ng.play();
+      }
     }
 
     function updateScore(isCorrect) {
@@ -473,7 +491,11 @@
 
     btnUma.addEventListener("click", () => handleAnswer(true));
     btnNotUma.addEventListener("click", () => handleAnswer(false));
-    nextBtn.addEventListener("click", () => nextQuestion());
+    nextBtn.addEventListener("click", () => {
+      sound_next.play();
+      nextQuestion();
+    });
+      
 
     // キーボード操作: 左/↑で「馬」、右/↓で「馬じゃない」
     document.addEventListener("keydown", (e) => {
