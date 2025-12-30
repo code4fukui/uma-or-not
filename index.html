@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>お正月・馬 四字熟語クイズ</title>
+  <title>四字熟語クイズ、馬か否か</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -113,7 +113,7 @@
       background: radial-gradient(circle at 30% 30%, #ffe082, transparent 60%);
       opacity: 0.45;
       top: -24px;
-      right: -24px;
+      left: -24px;
       pointer-events: none;
     }
 
@@ -137,6 +137,7 @@
     }
 
     .yoji {
+      font-family: serif;
       text-align: center;
       font-size: 2.6rem;
       letter-spacing: 0.35em;
@@ -146,14 +147,15 @@
 
     .yoji span.missing {
       display: inline-block;
-      width: 1.2em;
-      height: 1.2em;
-      line-height: 1.2em;
+      width: 1.4em;
+      height: 1.4em;
+      line-height: 1.1em;
       text-align: center;
-      border-radius: 0.3em;
-      border: 2px dashed var(--accent-gold);
-      font-size: 0.9em;
-      vertical-align: middle;
+      border: 2px solid black;
+      font-size: 0.8em;
+      vertical-align: bottom;
+      margin-bottom: 0.2em;
+      margin-right: 0.25em;
       background: rgba(255, 249, 219, 0.9);
     }
 
@@ -174,8 +176,9 @@
       font: inherit;
       cursor: pointer;
       border: none;
+      font-size: 180%;
       border-radius: 999px;
-      padding: 10px 12px;
+      padding: 18px 12px 10px 12px;
       transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.2s ease;
     }
 
@@ -327,8 +330,8 @@
 <body>
   <div class="app">
     <header>
-      <div class="subtitle">お正月スペシャルクイズ</div>
-      <h1>隠れた一字は「馬」？ 四字熟語</h1>
+      <div class="subtitle">お正月、丙午スペシャル</div>
+      <h1><ruby>四字熟語<rt>よじじゅくご</rt></ruby>クイズ、<ruby>馬<rt>うま</rt></ruby>か<ruby>否<rt>いな</rt></ruby>か</h1>
       <div class="emoji">🎍🐴🎍</div>
     </header>
     <main>
@@ -338,10 +341,10 @@
           <div class="badge">□ の中身を当てよう</div>
         </div>
         <div class="yoji" id="yoji-display">□□□□</div>
-        <div class="hint">隠れた一字は「馬」かな？ それとも…？</div>
+        <div class="hint">隠れた一字は、馬?</div>
         <div class="buttons">
-          <button class="btn-uma" id="btn-uma">「馬」だと思う</button>
-          <button class="btn-not-uma" id="btn-not-uma">「馬」じゃない</button>
+          <button class="btn-uma" id="btn-uma"><ruby>馬<rt>うま</rt></ruby></button>
+          <button class="btn-not-uma" id="btn-not-uma"><ruby>否<rt>いな</rt></ruby></button>
         </div>
       </section>
 
@@ -456,7 +459,7 @@
       // 表示用に missingIndex の文字を □ に置き換える
       const chars = q.full.split("");
       const missingChar = chars[q.missingIndex];
-      chars[q.missingIndex] = `<span class="missing">□</span>`;
+      chars[q.missingIndex] = `<span class="missing"></span>`;
       yojiDisplayEl.innerHTML = chars.join("");
       yojiDisplayEl.classList.remove("pop");
 
