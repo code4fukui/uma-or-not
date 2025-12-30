@@ -1,4 +1,10 @@
-# uma-or-not
+# uma-or-not 四字熟語クイズ 馬か否か
+
+https://code4fukui.github.io/uma-or-not/
+
+## opendata
+
+- 動物四字熟語 [idiom4.csv](https://github.com/code4fukui/horse-opendata/blob/main/idiom4.csv) by [horse-opendata](https://github.com/code4fukui/horse-opendata/)
 
 ## suond
 
