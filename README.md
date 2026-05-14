@@ -6,7 +6,7 @@ A New Year-themed web quiz game about Japanese four-character idioms (四字熟�
 
 ## Demo
 
-Play the game here: **https://code4fukui.github.io/uma-or-not/**
+Play the game here: **https://github.com/code4fukui/uma-or-not
 
 ## How to Play
 

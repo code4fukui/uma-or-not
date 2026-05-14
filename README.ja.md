@@ -4,7 +4,7 @@
 
 ## デモ
 
-ゲームはこちらから遊べます: **https://code4fukui.github.io/uma-or-not/**
+ゲームはこちらから遊べます: **https://github.com/code4fukui/uma-or-not
 
 ## 遊び方
 
